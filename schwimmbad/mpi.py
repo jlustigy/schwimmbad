@@ -82,22 +82,22 @@ class MPIPool(BasePool):
         worker = self.comm.rank
         status = MPI.Status()
         while True:
-            log.log(_VERBOSE, "Worker {0} waiting for task".format(worker))
+            print("Worker {0} waiting for task".format(worker))
 
-            task = self.comm.Recv(source=self.master, tag=MPI.ANY_TAG,
+            task = self.comm.recv(source=self.master, tag=MPI.ANY_TAG,
                                   status=status)
 
             if task is None:
-                log.log(_VERBOSE, "Worker {0} told to quit work".format(worker))
+                print("Worker {0} told to quit work".format(worker))
                 break
 
             func, arg = task
-            log.log(_VERBOSE, "Worker {0} got task {1} with tag {2}"
+            print("Worker {0} got task {1} with tag {2}"
                     .format(worker, arg, status.tag))
 
             result = func(arg)
 
-            log.log(_VERBOSE, "Worker {0} sending answer {1} with tag {2}"
+            print("Worker {0} sending answer {1} with tag {2}"
                     .format(worker, result, status.tag))
 
             self.comm.Ssend(result, self.master, status.tag)
@@ -152,7 +152,7 @@ class MPIPool(BasePool):
             if workerset and tasklist:
                 worker = workerset.pop()
                 taskid, task = tasklist.pop()
-                log.log(_VERBOSE, "Sent task %s to worker %s with tag %s",
+                print("Sent task %s to worker %s with tag %s",
                         task[1], worker, taskid)
                 self.comm.Send(task, dest=worker, tag=taskid)
 
@@ -164,11 +164,11 @@ class MPIPool(BasePool):
                 self.comm.Probe(source=MPI.ANY_SOURCE, tag=MPI.ANY_TAG)
 
             status = MPI.Status()
-            result = self.comm.Recv(source=MPI.ANY_SOURCE, tag=MPI.ANY_TAG,
+            result = self.comm.recv(source=MPI.ANY_SOURCE, tag=MPI.ANY_TAG,
                                     status=status)
             worker = status.source
             taskid = status.tag
-            log.log(_VERBOSE, "Master received from worker %s with tag %s",
+            print("Master received from worker %s with tag %s",
                     worker, taskid)
 
             callback(result)
