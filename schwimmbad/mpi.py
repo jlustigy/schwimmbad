@@ -100,7 +100,7 @@ class MPIPool(BasePool):
             log.log(_VERBOSE, "Worker {0} sending answer {1} with tag {2}"
                     .format(worker, result, status.tag))
 
-            self.comm.ssend(result, self.master, status.tag)
+            self.comm.Ssend(result, self.master, status.tag)
 
         if callback is not None:
             callback()
