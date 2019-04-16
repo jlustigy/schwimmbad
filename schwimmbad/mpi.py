@@ -84,7 +84,7 @@ class MPIPool(BasePool):
         while True:
             log.log(_VERBOSE, "Worker {0} waiting for task".format(worker))
 
-            task = self.comm.recv(source=self.master, tag=MPI.ANY_TAG,
+            task = self.comm.Recv(source=self.master, tag=MPI.ANY_TAG,
                                   status=status)
 
             if task is None:
@@ -164,7 +164,7 @@ class MPIPool(BasePool):
                 self.comm.Probe(source=MPI.ANY_SOURCE, tag=MPI.ANY_TAG)
 
             status = MPI.Status()
-            result = self.comm.recv(source=MPI.ANY_SOURCE, tag=MPI.ANY_TAG,
+            result = self.comm.Recv(source=MPI.ANY_SOURCE, tag=MPI.ANY_TAG,
                                     status=status)
             worker = status.source
             taskid = status.tag
