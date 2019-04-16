@@ -154,7 +154,7 @@ class MPIPool(BasePool):
                 taskid, task = tasklist.pop()
                 log.log(_VERBOSE, "Sent task %s to worker %s with tag %s",
                         task[1], worker, taskid)
-                self.comm.send(task, dest=worker, tag=taskid)
+                self.comm.Send(task, dest=worker, tag=taskid)
 
             if tasklist:
                 flag = self.comm.Iprobe(source=MPI.ANY_SOURCE, tag=MPI.ANY_TAG)
@@ -185,4 +185,4 @@ class MPIPool(BasePool):
             return
 
         for worker in self.workers:
-            self.comm.send(None, worker, 0)
+            self.comm.Send(None, worker, 0)
