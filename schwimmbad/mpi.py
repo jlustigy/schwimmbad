@@ -100,7 +100,7 @@ class MPIPool(BasePool):
             print("Worker {0} sending answer {1} with tag {2}"
                     .format(worker, result, status.tag))
 
-            self.comm.Ssend(result, self.master, status.tag)
+            self.comm.ssend(result, self.master, status.tag)
 
         if callback is not None:
             callback()
@@ -154,7 +154,7 @@ class MPIPool(BasePool):
                 taskid, task = tasklist.pop()
                 print("Sent task %s to worker %s with tag %s",
                         task[1], worker, taskid)
-                self.comm.Send(task, dest=worker, tag=taskid)
+                self.comm.send(task, dest=worker, tag=taskid)
 
             if tasklist:
                 flag = self.comm.Iprobe(source=MPI.ANY_SOURCE, tag=MPI.ANY_TAG)
@@ -185,4 +185,4 @@ class MPIPool(BasePool):
             return
 
         for worker in self.workers:
-            self.comm.Send(None, worker, 0)
+            self.comm.send(None, worker, 0)
