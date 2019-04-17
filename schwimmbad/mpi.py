@@ -93,8 +93,8 @@ class MPIPool(BasePool):
 
             func, arg = task
             print("Worker {0} got task {1} with tag {2}"
-                    .format(worker, task, status.tag))
-
+                    .format(worker, arg, status.tag))
+            print(func)
             result = func(arg)
 
             print("Worker {0} sending answer {1} with tag {2}"
