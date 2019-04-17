@@ -94,7 +94,7 @@ class MPIPool(BasePool):
             func, arg = task
             print("Worker {0} got task {1} with tag {2}"
                     .format(worker, arg, status.tag))
-            print(func)
+
             result = func(arg)
 
             print("Worker {0} sending answer {1} with tag {2}"
@@ -153,7 +153,7 @@ class MPIPool(BasePool):
                 worker = workerset.pop()
                 taskid, task = tasklist.pop()
                 print("Sent task %s to worker %s with tag %s",
-                        task[1], worker, taskid)
+                        task, worker, taskid)
                 self.comm.send(task, dest=worker, tag=taskid)
 
             if tasklist:
